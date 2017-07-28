@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userLogin">
+
+<select id="selectUserLogin" parameterType="UserLogin" resultType="UserLogin">
+		select *
+		from user_table   where  password = #{password} 
+	</select>
+
+<select id="selectUserLogincheck" parameterType="UserLogin" resultType="UserLogin">
+		select *
+		from user_table   where  uid = #{uid}  
+	</select>
+	
+<select id="selectUserLogincheckrights" parameterType="UserLogin" resultType="UserLogin">
+	select *
+	from user_table  where  email = #{email} or userName = #{userName}
+</select>
+  
+<insert id="insertUserLogin" parameterType="UserLogin">
+		insert into user_table 
+			(email,intflag,userName,password,userRights,usermessageflag)
+		values
+			(#{email},
+			#{intflag},
+			 #{userName},
+			 #{password},
+			 #{userRights},
+			 #{usermessageflag})
+	</insert>
+	
+<update id="updateUserLoginusername" parameterType="UserLogin">
+		update  user_table set 
+			userName=#{userName},			
+			email=#{email}  
+		from user_table  
+		where
+		uid= #{uid}
+	</update>	
+	
+<update id="updateUserLoginpass" parameterType="UserLogin">
+		update  user_table set 
+			password=#{password}		
+			 
+		from user_table  
+		where
+		uid= #{uid}
+	</update>	
+	
+<update id="updateUserLoginimag" parameterType="UserLogin">
+		update  user_table set 
+			imagead=#{imagead}			
+			 
+		from user_table  
+		where
+		uid= #{uid}
+	</update>		
+</mapper>

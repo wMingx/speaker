@@ -1,0 +1,462 @@
+ 
+ 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+   <title>极简社区</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="自由,社区,贴吧,自定">
+  <meta name="description" content="随意的聊聊">
+  <link rel="stylesheet" href="res/layui/css/layui.css">
+  <link rel="stylesheet" href="res/css/global.css">
+    <link href="themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+      <script type="text/javascript" src="third-party/template.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="umeditor.min.js"></script>
+	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+
+
+</head>
+<body>
+
+<div class="header">
+  <div class="main">
+    <a class="logo" href="index.html" title="Fly">Fly社区</a>
+    <div class="nav">
+
+    </div>
+    
+    <div class="nav-user" id="loginflag">
+    
+    </div>
+  </div>
+</div>
+
+
+<div class="main layui-clear">
+  <div class="wrap">
+    <div class="content detail">
+      <div class="fly-panel detail-box">
+        <h1 id="title"> </h1>
+        <div class="fly-tip fly-detail-hint" data-id="{{rows.id}}">
+         <!--   <span class="fly-tip-stick">置顶帖</span>-->
+          <!--  <span class="fly-tip-jing">精帖</span>-->
+          
+         <!--  <span>未结贴</span>-->
+          <!-- <span class="fly-tip-jie">已采纳</span> -->
+          
+          <!-- <span class="jie-admin" type="del" style="margin-left: 20px;">删除</span>
+          <span class="jie-admin" type="set" field="stick" rank="1">置顶</span> 
+          <span class="jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span>
+          <span class="jie-admin" type="set" field="status" rank="1">加精</span> 
+          <span class="jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> -->
+          
+          <div class="fly-list-hint"> 
+            <!-- <i class="iconfont" title="回答">&#xe60c;</i> 517
+            <i class="iconfont" title="人气">&#xe60b;</i> 98032-->
+          </div>
+        </div>
+        <div class="detail-about" id="user">
+
+          <div class="detail-hits" data-id="{{rows.id}}">
+            <span style="color:#FF7200"> </span>
+             <!--<span class="layui-btn layui-btn-mini jie-admin" type="edit"><a href="/jie/edit/{{rows.id}}">编辑此贴</a></span>-->
+            <!--<span class="layui-btn layui-btn-mini jie-admin " type="collect" data-type="add">收藏</span>-->
+            <!--<span class="layui-btn layui-btn-mini jie-admin  layui-btn-danger" type="collect" data-type="add">取消收藏</span>-->
+          </div>
+        </div>        
+        <div class="detail-body photos" id="detail-body" style="margin-bottom: 20px;">
+        </div>
+      </div>
+
+      <div class="fly-panel detail-box" style="padding-top: 0;">
+        <a name="comment"></a>
+        <ul class="jieda photos" id="jieda">        
+          
+
+          
+           <li id="noreply" class="fly-none">没有任何回答</li> 
+            
+        </ul>
+        <div id="page" style="text-align: center"></div>
+        <div class="layui-form layui-form-pane">
+ 
+            <div class="layui-form-item layui-form-text">
+              <div class="layui-input-block">
+                <script type="text/plain" id="myEditor" style="width:100%;height:240px;">
+       			</script>
+              </div>
+            </div>
+            <div style="text-align: center" class="layui-form-item">
+               <button  class="layui-btn site-demo-layedit" data-type="content">提交回复</button>
+              
+            </div>         
+        </div>
+      </div>
+    </div>
+  </div>
+  
+ 
+
+<div class="footer">
+  <p><a  > 社区</a> 2017 &copy;  </p>
+  <p>
+    <a href=" " target="_blank">产品授权</a>    
+  </p>
+</div>
+<script src="res/layui/layui.js"></script>
+
+<script type="text/template" id="html_user">
+          <a class="jie-user" href="">
+            <img src=${img} alt="">
+            <cite>${Name}
+              <em>${time}</em>
+            </cite>
+          </a>
+</script>
+<script type="text/template" id="html_template">
+
+<li data-id="12" class="jieda-daan">
+            <a name="item-121212121212"></a>
+            <div class="detail-about detail-about-reply">
+              <a class="jie-user" href="">
+                <img src=${img} alt="">
+                <cite>
+                  <i>${Name}</i>
+                  <!-- <em>(楼主)</em>
+                  <em style="color:#5FB878">(管理员)</em>
+                  <em style="color:#FF9E3F">（活雷锋）</em>
+                  <em style="color:#999">（该号已被封）</em> -->
+                </cite>
+              </a>
+              <div class="detail-hits">
+                <span>${time}</span>
+              </div>
+              <!--<i class="iconfont icon-caina" title="最佳答案"></i> -->
+            </div>
+            <div class="detail-body jieda-body">
+              {{html Text}} 
+            </div>
+            <div class="jieda-reply">
+              <!-- <span class="jieda-zan zanok" type="zan"><i class="iconfont icon-zan"></i><em>12</em></span>
+              <span type="reply"><i class="iconfont icon-svgmoban53"></i>回复</span> -->
+              <!-- <div class="jieda-admin">
+                <span type="edit">编辑</span>
+                <span type="del">删除</span>
+                <span class="jieda-accept" type="accept">采纳</span>
+              </div> -->
+            </div>
+          </li>
+</script>
+<script type="text/template" id="html_unlogin">
+      <!-- 未登入状态 -->
+      <a class="unlogin" href="user/login.html"><i class="iconfont icon-touxiang"></i></a>
+      <span><a href="user/login.html">登入</a><a href="user/reg.html">注册</a></span>
+</script>
+<script type="text/template" id="html_login">      
+      <!-- 登入后的状态 -->      
+      <a class="avatar" href="user/index.html">
+        <img src=${img}>
+        <cite>${Name}</cite>
+        <i> </i>
+      </a>
+      <div class="nav">
+        <a href="user/set.html"><i class="iconfont icon-shezhi"></i>设置</a>
+        <a href="/user/logout"><i class="iconfont icon-tuichu" style="top: 0; font-size: 22px;"></i>退了</a>
+      </div> 
+</script>
+<script>
+var um = UM.getEditor('myEditor');  
+ 
+
+</script>
+<script>
+ 
+var pagecount=1;
+var pageintflag=1;
+
+try{
+	pageintflag=getURLParameter("pageintflag");
+}catch(err)
+{pageintflag=1}
+  
+  
+  
+$(document).ready(function(){
+	$("#page").hide();
+
+	
+    var timestamp3 = new Date().getTime();
+    
+    var localtime  = new Date() ;
+    
+    json = {"userName":""        	   		  
+	   }
+
+	   jsonValue = JSON.stringify(json);
+
+	   var person=jsonValue; 
+
+	   xmlhttp=null;
+
+	   postloadXMLDoc("../../speaker/manager/userlogin/selsctuserloginsession"+"?t="+timestamp3 ,person,function()			
+	   {			
+	     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+	      {
+	       var myobj=eval(xmlhttp.responseText); 
+	       
+	       try{    	   
+	   	 	   if(myobj[0].userName == null){
+	   	 		   $("#html_unlogin").tmpl("").appendTo('#loginflag');	
+	   	 	   }
+	   	 	   else
+	   	 	   { 
+	   	 		var movies = [ { Name: myobj[0].userName,img:myobj[0].imagead } ]; 	
+	   		    
+	   				$("#html_login").tmpl(movies).appendTo('#loginflag');	
+	   		    }	     
+    
+			    json = {"themeid": getURLParameter("themeid")	   
+			   		  
+			    }
+			
+			    jsonValue = JSON.stringify(json);	  
+			 
+			    var person=jsonValue;
+			    
+			    xmlhttp=null;
+			    
+			    postloadXMLDoc("../../speaker/manager/themetable/selectthemetablelike"+"?t="+timestamp3 ,person,function()			
+			    {			
+			      if(xmlhttp.readyState==4 && xmlhttp.status==200)
+			       {
+			        var myobj=eval(xmlhttp.responseText); 
+			        
+			        try{         
+			        	for (var i=0;i<myobj.length;i++)
+				        	{        	
+			        		
+
+				        	
+							if(myobj[i].title!=null)
+						    {
+								document.getElementById("detail-body").innerHTML=myobj[i].themetext;
+							
+							    document.getElementById("title").innerHTML=myobj[i].title;
+							
+							    var movies = [ { Name: myobj[i].userName,time:myobj[i].updatedTime.slice(0,myobj[i].updatedTime.indexOf(".")),img:myobj[i].imagead} ]; 	
+						    
+							 	$("#html_user").tmpl(movies).appendTo('#user');	
+								
+							 	ReplyTablethemeid();
+						    }            
+							else
+						    {			
+						        alert("获取列表失败");
+						         //window.location.href="index.html";  
+						        return;
+						    }
+			        	} 	        	
+			          }catch(err)
+			          {
+			            alert("获取列表失败");
+			            window.location.href="index.html";  
+			            return;
+			          }		
+			       }
+			    });
+	       }catch(err)
+	         {
+	           alert("获取列表失败");
+	           window.location.href="index.html";  
+	           return;
+	         }		
+	      }
+	   });	
+});
+
+
+function ReplyTablethemeid()
+{
+	var timestamp3 = new Date().getTime();
+    json = {"intflag":(pageintflag-1)*15,// 起始索引
+    		"themeid": getURLParameter("themeid") 
+     		  
+      }
+      jsonValue = JSON.stringify(json);	 
+   
+      var person=jsonValue;
+    postloadXMLDoc("../../speaker/manager/replyTable/selectReplyTablethemeid"+"?t="+timestamp3 ,person,function()			
+	   {			
+	     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+	      {
+	       var myobj=eval(xmlhttp.responseText); 
+	       
+	       try{   
+	    	   
+	    	   if(myobj.length <= 0){
+	    		  
+	    	   }
+	    	   else
+	    	   {   
+	    		   if( myobj[0].count>15)
+        			{
+	    		   	 pagecount=Math.ceil(myobj[0].count/15);
+		        	layui.use(['laypage', 'layer'], function(){
+						var laypage = layui.laypage
+						,layer = layui.layer;
+						  
+						laypage({
+						  cont: 'page', 
+						  pages: pagecount, 
+						  curr:pageintflag,
+						  jump: function(obj, first){  
+						    if(!first){  
+						      // layer.msg('第 '+ obj.curr +' 页');
+						  	  pageintflag= obj.curr;
+						  	  
+						  	  ReplyTablethemeid(); 
+						    }
+						  }
+						});
+		        	  });
+	    		   	$("#page").show();
+	    		   
+        			}
+	    		   $("#noreply").hide();
+	    		   $( "#jieda" ).empty();
+			       	for (var i=0;i<myobj.length;i++)
+			       	{        	
+			        	
+						if(myobj[i].replyid!=null)
+					    {				
+							var movies = [ { Name: myobj[i].userName,time:myobj[i].time.slice(0,myobj[i].time.indexOf(".")),Text: myobj[i].replytext,img:myobj[i].imagead} ]; 	
+							
+					    
+							 $("#html_template").tmpl(movies).appendTo('#jieda');	
+					    }            
+						else
+					    {			
+					        alert("获取列表失败");
+					         //window.location.href="index.html";  
+					        return;
+					    }
+			       	} 
+	       	  } 
+	         }catch(err)
+	         {
+	           alert("获取列表失败");
+	           window.location.href="index.html";  
+	           return;
+	         }		
+	      }
+	   });	
+	}
+
+
+
+/*--如何根据url获取参数：--*/ 
+function getURLParameter(name) {
+   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+/*--窗口关闭--*/
+function CloseWebPage(){
+if (navigator.userAgent.indexOf("MSIE") > 0) {
+ if (navigator.userAgent.indexOf("MSIE 6.0") > 0) {
+  window.opener = null;
+  window.close();
+ } else {
+  window.open('', '_top');
+  window.top.close();
+ }
+}
+else if (navigator.userAgent.indexOf("Firefox") > 0) {
+ window.location.href = 'about:blank ';
+} else {
+ window.opener = null;
+ window.open('', '_self', '');
+ window.close();
+}
+}
+
+
+
+var active = {
+  content: function(){
+		var timestamp3 = new Date().getTime(); 
+		json = {"intflag":getURLParameter("themeid"),
+				
+				"themeid":getURLParameter("themeid"),
+				
+				"replytext":UM.getEditor('myEditor').getContent() 
+		};
+      
+        jsonValue = JSON.stringify(json); 
+		var person=jsonValue;
+		xmlhttp=null;
+
+		postloadXMLDoc("../../speaker/manager/replyTable/insertReplyTable"+"?t="+timestamp3,person,function()			
+		{			
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{						
+				var myobj= xmlhttp.responseText;  
+			try{
+					if(myobj!="")
+						{
+						 
+						window.location.href="detail.html?themeid="+getURLParameter("themeid")+"&pageintflag="+pagecount;
+						 
+						}else
+							{
+							 alert("请登录");
+							}
+			 }catch(err)
+			 {
+				 alert("回复失败");
+				  
+				 return;
+			 }		
+			}
+		});     
+   }   
+};
+$('.site-demo-layedit').on('click', function(){
+  var type = $(this).data('type');
+  active[type] ? active[type].call(this) : '';
+});
+
+ /*--POST-SEND--*/
+function postloadXMLDoc(url,postvlue,cfunc)
+{
+	if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	 }
+	 else
+	 {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+  
+	if (xmlhttp!=null) 
+	 {
+	   xmlhttp.onreadystatechange=cfunc;
+	   xmlhttp.open("POST",url,true);
+	   xmlhttp.setRequestHeader("Content-type","application/json;charset=utf-8");
+	   xmlhttp.send(postvlue);
+		//xmlhttp.send("userName="+inputname+"&userPassword="+inputpass);
+		//xmlhttp.send();
+	 }else
+	 {
+	  alert("Your browser does not support XMLHTTP.");
+	 }
+}
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="testOverview">
+
+<select id="selectTestOverview" parameterType="testOverview" resultType="testOverview">
+		select firstTestName  as firstTestName,  code as code, firstTestResult  as firstTestResult,firstTestEX   as  firstTestEX, firstTestTime  as firstTestTime,lastTestTime as  lastTestTime,
+		lastTestName  as lastTestName,lastTestEX   as lastTestEX,lastTestResult   as lastTestResult
+		from testOverview  where  code  = #{code}
+	</select>
+
+
+  
+<insert id="insertTestOverview" parameterType="testOverview">
+		insert into testOverview 
+			(firstTestName,code,firstTestResult,firstTestEX,firstTestTime ,lastTestTime ,
+		lastTestName ,lastTestEX ,lastTestResult    )
+		values
+			(#{firstTestName},
+			 #{code},
+			 #{firstTestResult},
+			 #{firstTestEX},
+			 #{firstTestTime},
+			 #{lastTestTime},
+			 #{lastTestName},
+			 #{lastTestEX},
+			 #{lastTestResult}
+			 
+			 
+			 
+			 ) 
+	</insert>
+	
+<update id="updateTestOverview" parameterType="testOverview">
+		update  testOverview   set 
+			lastTestTime =  #{lastTestTime},
+			lastTestName = #{lastTestName},
+			lastTestEX   = #{lastTestEX},
+			lastTestResult   = #{lastTestResult}
+		
+		where
+		 code = #{code}
+	</update>
+	
+	
+</mapper>

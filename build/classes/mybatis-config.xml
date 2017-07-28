@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<typeAliases>
+<typeAlias type="springloz.User" alias="User" />
+<typeAlias type="springloz.ReplyTable" alias="ReplyTable" />
+<typeAlias type="springloz.ThemeTable" alias="ThemeTable" />
+<typeAlias type="springloz.MachineTestLog" alias="MachineTestLog" />
+<typeAlias type="springloz.UserLogin" alias="UserLogin" />
+<typeAlias type="springloz.TestRecord" alias="TestRecord" />
+<typeAlias type="springloz.TestOverview" alias="TestOverview" />
+<typeAlias type="springloz.MachineCodeModel" alias="MachineCodeModel" />
+<typeAlias type="springloz.MachineFlage" alias="MachineFlage" />
+<typeAlias type="springloz.MaintenanceIN" alias="MaintenanceIN" />
+<typeAlias type="springloz.MaintenanceMachinePcb" alias="MaintenanceMachinePcb" />
+<typeAlias type="springloz.MaintenanceQuality" alias="MaintenanceQuality" />
+<typeAlias type="springloz.MaintenanceReason" alias="MaintenanceReason" />
+<typeAlias type="springloz.MaintenanceSourceINOUT" alias="MaintenanceSourceINOUT" />
+<typeAlias type="springloz.MaintenanceSource" alias="MaintenanceSource" />
+<typeAlias type="springloz.MachinesoftVersion" alias="MachinesoftVersion" />
+</typeAliases>
+
+<mappers>
+<mapper resource="user.map.xml" />
+<mapper resource="ReplyTable.map.xml" />
+<mapper resource="ThemeTable.map.xml" />
+<mapper resource="MachineTestLog.map.xml" />
+<mapper resource="UserLogin.map.xml" />
+<mapper resource="TestRecord.map.xml" />
+<mapper resource="TestOverview.map.xml" />
+<mapper resource="MachineCodeModel.map.xml" />
+<mapper resource="MachineFlage.map.xml" />
+<mapper resource="MaintenanceIN.map.xml" />
+<mapper resource="MaintenanceMachinePCB.map.xml" />
+<mapper resource="MaintenanceQuality.map.xml" />
+<mapper resource="MaintenanceReason.map.xml" />
+<mapper resource="MaintenanceSourceINOUT.map.xml" />
+<mapper resource="MaintenanceSource.map.xml" />
+<mapper resource="MachinesoftVersion.map.xml" />
+
+
+</mappers>
+
+
+
+
+
+</configuration>

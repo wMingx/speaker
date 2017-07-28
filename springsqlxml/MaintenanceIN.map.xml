@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="maintenanceIN">
+	
+<select id="selectMaintenanceIN" parameterType="MaintenanceIN" resultType="MaintenanceIN">
+		select  code as code, 
+				model as model,
+		 		maintenanceINer as maintenanceINer,
+				timeIN as timeIN, 
+				maintenanceINReason as maintenanceINReason,
+				maintenanceFlag as maintenanceFlag,
+				maintenanceINDescribe as maintenanceINDescribe,
+				createdTime as createdTime,
+				convert(nvarchar(MAX),intflag) as intflag 
+		from maintenanceIN_table 
+		where code = #{code} 
+			</select>
+
+
+<select id="selectMaintenanceINFlag" parameterType="MaintenanceIN" resultType="MaintenanceIN">
+		select  code as code, 
+				model as model,
+		 		maintenanceINer as maintenanceINer,
+				timeIN as timeIN, 
+				maintenanceINReason as maintenanceINReason,
+				maintenanceFlag as maintenanceFlag,
+				maintenanceINDescribe as maintenanceINDescribe,
+				createdTime as createdTime,
+				convert(nvarchar(MAX),intflag) as intflag 
+		from maintenanceIN_table 
+		where  maintenanceFlag=#{maintenanceFlag}
+			</select>
+
+<select id="selectMaintenanceINintflag" parameterType="MaintenanceIN" resultType="MaintenanceIN">
+		select  code as code, 
+				model as model,
+		 		maintenanceINer as maintenanceINer,
+				timeIN as timeIN, 
+				maintenanceINReason as maintenanceINReason,
+				maintenanceFlag as maintenanceFlag,
+				maintenanceINDescribe as maintenanceINDescribe,
+				createdTime as createdTime,
+				convert(nvarchar(MAX),intflag) as intflag 
+		from maintenanceIN_table 
+		where intflag=convert(int,#{intflag}) 
+			</select>
+
+
+
+
+<insert id="insertMaintenanceIN" parameterType="MaintenanceIN">
+		
+		insert into maintenanceIN_table 
+			(code,			
+			 maintenanceINer,
+			 timeIN,
+			 maintenanceINReason,
+			 maintenanceFlag,
+			 maintenanceINDescribe,
+			 createdTime)
+		values
+			(#{code},			
+			 #{maintenanceINer},
+			 convert(datetime,#{timeIN}),			 
+			 #{maintenanceINReason},
+			 #{maintenanceFlag},
+			 #{maintenanceINDescribe},
+			 convert(datetime,#{createdTime})) 
+	</insert>
+
+
+	<update id="updateMaintenanceIN" parameterType="MaintenanceIN">
+		update  maintenanceIN_table set 
+			code=#{code},
+			
+			maintenanceINer=#{maintenanceINer}, 
+			timeIN = convert(datetime,#{timeIN}), 
+			maintenanceINReason =#{maintenanceINReason}, 
+			maintenanceFlag =#{maintenanceFlag}, 
+			maintenanceINDescribe =#{maintenanceINDescribe}		
+			
+		from maintenanceIN_table
+		where
+		intflag=convert(int,#{intflag})
+	</update>
+
+</mapper>

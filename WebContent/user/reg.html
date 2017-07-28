@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>注册</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="自由,社区,贴吧,自定">
+  <meta name="description" content="随意的聊聊">
+  <link rel="stylesheet" href="../../speaker/res/layui/css/layui.css">
+  <link rel="stylesheet" href="../../speaker/res/css/global.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+      <script type="text/javascript" src="../../speaker/third-party/template.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../speaker/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../speaker/umeditor.min.js"></script>
+  <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="main">
+    <a class="logo" href="../../speaker/index.html" title="Fly">Fly社区</a>
+    <div class="nav">
+ 
+    </div>
+    
+    <div class="nav-user">      
+      <!-- 登入后的状态 
+      
+      <a class="avatar" href="../user/index.html">
+        <img src="http://tp4.sinaimg.cn/1345566427/180/5730976522/0">
+        <cite>贤心</cite>
+        <i>VIP2</i>
+      </a>
+      <div class="nav">
+        <a href="../user/set.html"><i class="iconfont icon-shezhi"></i>设置</a>
+        <a href=""><i class="iconfont icon-tuichu" style="top: 0; font-size: 22px;"></i>退了</a>
+      </div>
+      -->
+    </div>
+  </div>
+</div>
+
+<div class="main layui-clear">
+
+  <div class="fly-panel fly-panel-user" pad20 >
+    <div class="layui-tab layui-tab-brief">
+      <ul class="layui-tab-title">
+        <li><a href="login.html">登入</a></li>
+        <li class="layui-this">注册</li>
+      </ul>
+      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+        <div class="layui-tab-item layui-show">
+          <div class="layui-form layui-form-pane">          
+           
+              <div  class="layui-form-item">
+                <label for="L_email" class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_username" class="layui-form-label">昵称</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_username" name="userName" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_pass" class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" id="L_pass" name="password" required lay-verify="required" autocomplete="off" class="layui-input" maxlength="16" minlength="6">
+                </div>
+                <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label">确认密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" id="L_repass" name="userRights" required lay-verify="required" autocomplete="off" class="layui-input"maxlength="16" minlength="6">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_vercode" class="layui-form-label">人类验证</label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_vercode" name="intflag" required lay-verify="required" placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid">
+                  <span style="color: #c00;">1+1=</span>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <button class="layui-btn site-demo-layedit" data-type="content" lay-filter="*" lay-submit>立即注册</button>
+              </div>           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p><a  > 社区</a> 2017 &copy;  </p>
+  <p>
+    <a href=" " target="_blank">产品授权</a>    
+  </p>
+</div>
+<script src="../../speaker/res/layui/layui.js"></script>
+<script>
+var active = {
+  content: function(){
+	var timestamp3 = new Date().getTime(); 
+	json = {"email":document.getElementById('L_email').value,
+			
+			"userName":document.getElementById('L_username').value,
+			
+			"password":document.getElementById('L_pass').value,
+			
+			"userRights":document.getElementById('L_repass').value,
+			
+			"intflag":document.getElementById('L_vercode').value              
+	};
+     
+       jsonValue = JSON.stringify(json); 
+	var person=jsonValue;
+	xmlhttp=null;
+
+	postloadXMLDoc("../../speaker/manager/userlogin/insertuserlogin"+"?t="+timestamp3,person,function()			
+	{			
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{						
+			var myobj=xmlhttp.responseText;  
+		try{
+							
+			if(myobj=="")
+			{
+				alert("注册成功");
+				 window.location.href="../../speaker/user/index.html";  
+			}else
+			{
+				alert("注册失败:"+myobj);
+			}
+			
+		 }catch(err)
+		 {
+			 alert("回复失败");
+			  
+			 return;
+		 }		
+		}
+	});     
+   }   
+};
+$('.site-demo-layedit').on('click', function(){
+  var type = $(this).data('type');
+  active[type] ? active[type].call(this) : '';
+});
+
+/*--POST-SEND--*/
+function postloadXMLDoc(url,postvlue,cfunc)
+{
+	if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	 }
+	 else
+	 {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+ 
+	if (xmlhttp!=null) 
+	 {
+	   xmlhttp.onreadystatechange=cfunc;
+	   xmlhttp.open("POST",url,true);
+	   xmlhttp.setRequestHeader("Content-type","application/json;charset=utf-8");
+	   xmlhttp.send(postvlue);
+		//xmlhttp.send("userName="+inputname+"&userPassword="+inputpass);
+		//xmlhttp.send();
+	 }else
+	 {
+	  alert("Your browser does not support XMLHTTP.");
+	 }
+}
+
+</script>
+
+</body>
+</html>

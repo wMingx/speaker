@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="maintenanceSourceINOUT">
+
+<select id="selectMaintenanceSourceINOUT" parameterType="MaintenanceSourceINOUT" resultType="MaintenanceSourceINOUT">
+		select  code as code, 
+				sourceIN as sourceIN,
+		 		gone as gone,
+				createdTime as createdTime,
+				convert(nvarchar(MAX),intflag) as intflag 
+		from maintenanceSourceINOUT 
+		where  createdTime=convert(datetime,#{createdTime})
+			</select>
+			
+<insert id="insertMaintenanceSourceINOUT" parameterType="MaintenanceSourceINOUT">
+		
+		insert into maintenanceSourceINOUT 
+			(code,
+			 sourceIN,
+			 createdTime,
+			 gone)
+		values
+			(#{code},
+			 #{sourceIN},
+			 convert(datetime,#{createdTime}),
+			 #{gone}) 
+		
+	</insert>			
+			
+<update id="updateMaintenanceSourceINOUT" parameterType="MaintenanceSourceINOUT">
+		update  maintenanceSourceINOUT set 
+			
+			sourceIN=#{sourceIN},
+			gone=#{gone}					
+			
+		from maintenanceSourceINOUT
+		where
+		code = #{code} and createdTime=convert(datetime,#{createdTime})
+	</update>			
+
+</mapper>

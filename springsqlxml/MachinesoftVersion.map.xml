@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="machinesoftVersion">
+
+<select id="selectMachineversion" parameterType="MachinesoftVersion" resultType="MachinesoftVersion">
+		select inflag,softVersion,machineModel
+		from machineversion_table  where  machineModel = #{machineModel}  
+	</select>
+	
+<select id="selectDeliverysoft" parameterType="MachinesoftVersion" resultType="MachinesoftVersion">
+	select inflag,machineCode,softVersion
+	from deliverysoft_table  where  machineCode = #{machineCode}  
+</select>
+
+
+  
+<insert id="insertDeliverysoft" parameterType="MachinesoftVersion">
+		insert into deliverysoft_table 
+			(machineCode,softVersion )
+		values
+			(#{machineCode},
+			 #{softVersion},
+			 #{originalValue} 			 			 
+			 ) 
+		
+	</insert>
+	
+	 
+	
+	
+</mapper>

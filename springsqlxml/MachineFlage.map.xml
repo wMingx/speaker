@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="machineFlage">
+
+<select id="selectMachineFlage_machineFlag" parameterType="MachineFlage" resultType="MachineFlage">
+		select m.intflag as intflag,
+		m.machineCode as machineCode,
+		machineCodeModel.machineModel as machineModel,
+		m.machineFlag as machineFlag, 
+		m.createdTime as createdTime,
+		m.updatedTime as updatedTime
+		from machineFlage as m LEFT JOIN machineCodeModel ON m.machineCode = machineCodeModel.machineCode 
+		where  m.machineFlag= #{machineFlag} 
+	</select>
+
+<select id="selectMachineFlage_machineCode" parameterType="MachineFlage" resultType="MachineFlage">
+		select m.intflag as intflag,
+		m.machineCode as machineCode,
+		m.endName as machineModel,
+		m.machineFlag as machineFlag, 
+		m.createdTime as createdTime,
+		m.updatedTime as updatedTime
+		from machineFlage as m
+		where  m.machineCode= #{machineCode}
+	</select>
+  
+<insert id="insertMachineFlage" parameterType="MachineFlage">
+		insert into machineFlage 
+			(machineCode,machineFlag,createdName)
+		values
+			(#{machineCode},
+			 #{machineFlag},
+			 #{machineModel}) 
+	</insert>
+	
+		
+	<update id="updateMachineFlage" parameterType="MachineFlage">
+		update  machineFlage set 
+			machineCode=#{machineCode},machineFlag=#{machineFlag},endName=#{machineModel},updatedTime = convert(datetime,#{updatedTime})
+		from machineFlage
+		where
+		intflag=convert(int,#{intflag})
+	</update>
+	
+	
+</mapper>

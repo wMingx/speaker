@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="themeTable">
+
+<select id="selectthemeTable" parameterType="ThemeTable" resultType="ThemeTable">
+		select top 15 * from 
+		(select row_number()over(order by updatedTime DESC )rownumber,* from theme_table where barid = #{barid})a
+		where rownumber>#{intflag}  
+		
+		 
+	</select>
+	
+	
+<select id="selectthemeTableLike" parameterType="ThemeTable" resultType="ThemeTable">
+		select * from theme_table where  themeid=#{themeid}
+		
+</select>
+
+<select id="selectthemeTableuid" parameterType="ThemeTable" resultType="ThemeTable">
+		select top 15 * from 
+		(select row_number()over(order by updatedTime DESC  )rownumber,* from theme_table where uid=#{uid})a
+		where rownumber>#{intflag}  
+		 
+		
+</select>
+
+<select id="selectthemeTableuidcount" parameterType="ThemeTable" resultType="java.lang.Integer">
+		select count(*) from theme_table where  uid=#{uid}
+		
+</select>
+
+<select id="selectthemeTablecount" parameterType="ThemeTable" resultType="java.lang.Integer" >
+		select count(*) from theme_table where barid = #{barid}
+</select>
+
+  
+<insert id="insertthemeTable" parameterType="ThemeTable">
+		insert into theme_table 
+			(intflag,title,themetext,uid,titleflag,barid,updatedTime,updatauid)
+		values
+			(#{intflag},
+			 #{title},
+			 #{themetext},
+			 #{uid},
+			 #{titleflag},
+			 #{barid},
+			 GETDATE(),
+			 #{updatauid} ) 
+	</insert>
+	
+	
+		<update id="updatethemeTable" parameterType="ThemeTable">
+		update  theme_table set 
+			intflag=#{intflag},			
+			title=#{title},
+			themetext=#{themetext},
+			titleflag=#{titleflag}, 
+			uid=#{uid},
+			barid=#{barid},
+			updatauid=#{updatauid},
+			updatedTime=GETDATE()
+			
+		
+		from theme_table  
+		where
+		themeid= #{themeid}
+	</update>
+<update id="updatethemeTabletime" parameterType="ThemeTable">
+		update  theme_table set 
+ 
+			updatedTime=GETDATE()
+			
+		
+		from theme_table  
+		where
+		themeid= #{themeid}
+	</update>
+	<delete id="deletethemeTable" parameterType="ThemeTable">
+	delete
+	
+	from assembly_table
+	
+	where
+	
+	createdTime=convert(datetime,#{createdTime})
+	
+	
+	</delete>
+	
+</mapper>

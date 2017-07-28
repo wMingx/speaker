@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>我的消息</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="fly,layui,前端社区">
+  <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+  <link rel="stylesheet" href="../../speaker/res/layui/css/layui.css">
+  <link rel="stylesheet" href="../../speaker/res/css/global.css">
+      	
+   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+   <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="main">
+    <a class="logo" href="../../speaker/index.html" title="Fly">Fly社区</a>
+    <div class="nav">
+ 
+    </div>
+    
+      <div class="nav-user" id="loginflag">      
+ 
+      
+    </div>
+  </div>
+</div>
+
+<div class="main fly-user-main layui-clear">
+  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+ 
+    <li class="layui-nav-item">
+      <a href="index.html">
+        <i class="layui-icon">&#xe612;</i>
+        用户中心
+      </a>
+    </li>
+    <li class="layui-nav-item">
+      <a href="set.html">
+        <i class="layui-icon">&#xe620;</i>
+        基本设置
+      </a>
+    </li>
+    <li class="layui-nav-item layui-this">
+      <a href="message.html">
+        <i class="layui-icon">&#xe611;</i>
+        我的消息
+      </a>
+    </li>
+  </ul>
+  
+  <div class="site-tree-mobile layui-hide">
+    <i class="layui-icon">&#xe602;</i>
+  </div>
+  <div class="site-mobile-shade"></div>
+
+  <div class="fly-panel fly-panel-user" pad20>
+	  <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_msg" style="margin-top: 15px;">
+	    <button class="layui-btn layui-btn-danger" id="LAY_delallmsg">清空全部消息</button>
+	    <div  id="LAY_minemsg" style="margin-top: 10px;">
+        <!--<div class="fly-none">您暂时没有最新消息</div>-->
+        <ul class="mine-msg">
+          <li data-id="123">
+            <blockquote class="layui-elem-quote">
+              <a href="/jump?username=Absolutely" target="_blank"><cite>Absolutely</cite></a>回答了您的求解<a target="_blank" href="/jie/8153.html/page/0/#item-1489505778669"><cite>layui后台框架</cite></a>
+            </blockquote>
+            <p><span>1小时前</span><a href="javascript:;" class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a></p>
+          </li>
+          <li data-id="123">
+            <blockquote class="layui-elem-quote">
+              系统消息：欢迎使用 layui
+            </blockquote>
+            <p><span>1小时前</span><a href="javascript:;" class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a></p>
+          </li>
+        </ul>
+      </div>
+	  </div>
+	</div>
+
+</div>
+
+
+<div class="footer">
+  <p><a href="http://fly.layui.com/">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/">layui.com</a></p>
+  <p>
+    <a href="http://fly.layui.com/auth/get" target="_blank">产品授权</a>
+    <a href="http://fly.layui.com/jie/8157.html" target="_blank">获取Fly社区模版</a>
+    <a href="http://fly.layui.com/jie/2461.html" target="_blank">微信公众号</a>
+  </p>
+</div>
+<script src="../../speaker/res/layui/layui.js"></script>
+<script type="text/template" id="html_login">      
+      <!-- 登入后的状态 -->      
+      <a class="avatar" href="user/index.html">
+        <img src="http://tp4.sinaimg.cn/1345566427/180/5730976522/0">
+        <cite>${Name}</cite>
+        <i> </i>
+      </a>
+      <div class="nav">
+        <a href="../../speaker/user/set.html"><i class="iconfont icon-shezhi"></i>设置</a>
+        <a href="../../speaker/user/logout/"><i class="iconfont icon-tuichu" style="top: 0; font-size: 22px;"></i>退了</a>
+      </div> 
+</script>
+<script type="text/template" id="html_unlogin">
+      <!-- 未登入状态 -->
+      <a class="unlogin" href="../../speaker/user/login.html"><i class="iconfont icon-touxiang"></i></a>
+      <span><a href="../../speaker/user/login.html">登入</a><a href="../../speaker/user/reg.html">注册</a></span>
+</script>
+<script>
+$(document).ready(function(){
+	
+    var timestamp3 = new Date().getTime();
+    
+    var localtime  = new Date() ;
+    
+    json = {"userName":""        	   		  
+	   }
+
+	   jsonValue = JSON.stringify(json);
+
+	   var person=jsonValue; 
+
+	   xmlhttp=null;
+
+	   postloadXMLDoc("http://localhost:8000/speaker/manager/userlogin/selsctuserloginsession"+"?t="+timestamp3 ,person,function()			
+	   {			
+	     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+	      {
+	       var myobj=eval(xmlhttp.responseText); 
+	       
+	       try{    	   
+	   	 	   if(myobj[0].userName == null){
+	   	 		   $("#html_unlogin").tmpl("").appendTo('#loginflag');	
+	   	 			alert("登陆失效");
+	   	 			window.location.href="../../speaker/index.html";  
+	   	 	   }
+	   	 	   else
+	   	 	   { 
+		   	 		var movies = [ { Name: myobj[0].userName } ]; 	
+		   		    
+	   				$("#html_login").tmpl(movies).appendTo('#loginflag');	
+	   		    }	 			    
+	       }catch(err)
+	         {
+	           alert("获取列表失败");
+	            
+	           return;
+	         }		
+	      }
+	   });	
+});
+/*--POST-SEND--*/
+function postloadXMLDoc(url,postvlue,cfunc)
+{
+	if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	 }
+	 else
+	 {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+  
+	if (xmlhttp!=null) 
+	 {
+	   xmlhttp.onreadystatechange=cfunc;
+	   xmlhttp.open("POST",url,true);
+	   xmlhttp.setRequestHeader("Content-type","application/json;charset=utf-8");
+	   xmlhttp.send(postvlue);
+		//xmlhttp.send("userName="+inputname+"&userPassword="+inputpass);
+		//xmlhttp.send();
+	 }else
+	 {
+	  alert("Your browser does not support XMLHTTP.");
+	 }
+}
+</script>
+
+</body>
+</html>

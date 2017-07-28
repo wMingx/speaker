@@ -1,0 +1,358 @@
+ 
+ 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>极简社区</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="自由,社区,贴吧,自定">
+  <meta name="description" content="随意的聊聊">
+  <link rel="stylesheet" href="res/layui/css/layui.css">
+  <link rel="stylesheet" href="res/css/global.css">
+  <link href="themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+   <script src="res/layui/layui.js"></script>
+	
+    <script type="text/javascript" src="third-party/jquery.min.js"></script>
+    <script type="text/javascript" src="third-party/template.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="umeditor.min.js"></script>
+    <script type="text/javascript" src="lang/zh-cn/zh-cn.js"></script>
+	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+
+</head>
+<body>
+
+<div class="header">
+  <div class="main">
+     
+    <div class="nav">         
+    </div>    
+    <div class="nav-user" id="loginflag">
+      <span>
+      <a id="titlebarname">  </a>
+      </span> 
+    </div>
+  </div>
+</div>
+
+
+<div class="main layui-clear">
+  <div class="wrap">
+    <div class="content">
+ 
+ 
+      <ul class="fly-list" id="reply_table">        
+      </ul>      
+      <ul class="fly-list fly-list-top"  >       
+      </ul>      
+      <div id="page" style="text-align: center"></div>
+
+      <input id="theme" class="layui-input" autocomplete="off" placeholder="输入标题:" type="text" ></input>
+       
+       <script type="text/plain" id="myEditor" style="width:100%;height:240px;">
+       </script>
+       
+      <div style="text-align: center">
+        
+      <div class="laypage-main">
+        <button class="layui-btn site-demo-layedit" data-type="content">提交</button>
+      </div>
+
+      </div>      
+    </div>
+  </div>
+  
+   
+</div>
+<script>
+var um = UM.getEditor('myEditor');      
+ 
+
+</script>
+
+ 
+<script type="text/template" id="html_template">
+  <li class="fly-list-li">
+    <a href="user/home.html" class="fly-list-avatar">
+      <img src=${img} alt="">
+    </a>
+    <h2 class="fly-tip">
+      <a href="detail.html?themeid=${themeid}" >${Name}</a>
+    </h2>
+    <p>
+      <span><a href="user/home.html">${username}</a></span>
+      <span>${time}</span>
+        
+      <span class="fly-list-hint"> 
+        <i class="iconfont" title="回答">&#xe60c;</i>${reply}
+        
+      </span>
+    </p>
+  </li>
+
+</script>
+<script type="text/template" id="html_unlogin">
+      <!-- 未登入状态 -->
+      <a class="unlogin" href="user/login.html"><i class="iconfont icon-touxiang"></i></a>
+      <span><a href="user/login.html">登入</a><a href="user/reg.html">注册</a></span>
+</script>
+<script type="text/template" id="html_login">      
+      <!-- 登入后的状态 -->      
+      <a class="avatar" href="user/index.html">
+        <img src=${img}>
+        <cite>${Name}</cite>
+        <i> </i>
+      </a>
+      <div class="nav">
+        <a href="user/set.html"><i class="iconfont icon-shezhi"></i>设置</a>
+        <a href="user/logout"><i class="iconfont icon-tuichu" style="top: 0; font-size: 22px;"></i>退了</a>
+      </div> 
+</script>
+<script>
+
+var pageintflag=1;
+
+
+$(document).ready(function(){
+	  
+	$("#page").hide();
+    try{
+    	pageintflag=getURLParameter("pageintflag");
+    }catch(err)
+    {pageintflag=1}
+    var timestamp3 = new Date().getTime();
+    
+    var localtime  = new Date() ;
+
+    json = {"intflag":(pageintflag-1)*15,// 起始索引
+   		  "barid":0 
+   		  
+    }
+
+
+    jsonValue = JSON.stringify(json);	  
+ 
+    var person=jsonValue;
+    
+    xmlhttp=null;
+    
+    postloadXMLDoc("../../speaker/manager/themetable/selectthemetable"+"?t="+timestamp3 ,person,function()			
+    {			
+      if(xmlhttp.readyState==4 && xmlhttp.status==200)
+       {
+        var myobj=eval(xmlhttp.responseText); 
+        
+        try{         
+        	if(myobj.length>0)
+        		{
+        		if( myobj[0].count>15)
+        			{        			
+        				var pagecount=Math.ceil(myobj[0].count/15);
+	        			layui.use(['laypage', 'layer'], function(){
+	        			      var laypage = layui.laypage
+	        			      ,layer = layui.layer;
+	        			        
+	        			      laypage({
+	        			        cont: 'page', 
+	        			        pages: pagecount, 
+	        			        curr:pageintflag, 
+	        			        jump: function(obj, first){  
+	        			          if(!first){  
+	        			            // layer.msg('第 '+ obj.curr +' 页');
+	        			        	  pageintflag= obj.curr;
+	        			        	  window.location.href="index.html?pageintflag="+obj.curr; 
+	        			          }
+	        			        }
+	        			      });
+	        			    });   
+        					$("#page").show();
+        			}
+        		}
+        	
+        	
+        	for (var i=0;i<myobj.length;i++)
+        	{        	
+	        	
+				if(myobj[i].title!=null)
+			    { 
+			       var movies = [ { Name: myobj[i].title,themeid:myobj[i].themeid,time:myobj[i].time.slice(0,myobj[i].time.indexOf(".")) ,img:myobj[i].imagead, username:myobj[i].userName, reply:myobj[i].replycount} ]; 	
+			     
+			       $("#html_template").tmpl(movies).appendTo('#reply_table');		
+			    
+			    
+			    }            
+				else
+			    {			
+			        alert("获取列表失败");
+			         //window.location.href="index.html";  
+			        return;
+			    }
+        	}
+        	json = {"userName":""        	   		  
+        	    }
+
+        	jsonValue = JSON.stringify(json);
+        	
+        	var person=jsonValue;
+
+        	xmlhttp=null;
+
+        	postloadXMLDoc("../../speaker/manager/userlogin/selsctuserloginsession"+"?t="+timestamp3 ,person,function()			
+        	{			
+        	  if(xmlhttp.readyState==4 && xmlhttp.status==200)
+        	   {
+        	    var myobj=eval(xmlhttp.responseText); 
+        	    
+        	    try{    	   
+        		 	   if(myobj[0].userName == null){
+        		 		   $("#html_unlogin").tmpl("").appendTo('#loginflag');	
+        		 	   }
+        		 	   else
+        		 	   { 
+        					var movies = [ { Name: myobj[0].userName,img:myobj[0].imagead } ]; 	
+        			    
+        					$("#html_login").tmpl(movies).appendTo('#loginflag');	
+        			    }	     
+        	      }catch(err)
+        	      {
+        	        alert("获取列表失败");
+        	        window.location.href="index.html";  
+        	        return;
+        	      }		
+        	   }
+        	});	
+          }catch(err)
+          {
+            alert("获取列表失败");
+            window.location.href="index.html";  
+            return;
+          }		
+       }
+    });	  
+	
+	});
+
+function getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+    return currentdate;
+}
+	  
+	  var active = {
+	    content: function(){
+	      
+        var timestamp3 = new Date().getTime();
+        
+        var localtime  = new Date() ;
+        
+        if(document.getElementById('theme').value.replace(/\s+/g, "")=="")
+        	{
+        	alert("标题不可为空");
+        	return;
+        	}
+        if(UM.getEditor('myEditor').getContentTxt().replace(/\s+/g, "")=="")
+    	{
+    	alert("内容不可为空");
+    	return;
+    	}
+
+	     json = {"title":document.getElementById('theme').value,
+	   		  "themetext":UM.getEditor('myEditor').getContent(),
+	   		  "updatedTime":getNowFormatDate()
+	   		  
+	     }
+	
+	     jsonValue = JSON.stringify(json);	  
+	 
+        var person=jsonValue;
+        
+        xmlhttp=null;
+        
+        postloadXMLDoc("../../speaker/manager/themetable/insertthemetabletable"+"?t="+timestamp3 ,person,function()			
+        {			
+          if(xmlhttp.readyState==4 && xmlhttp.status==200)
+           {
+            var myobj=xmlhttp.responseText; 
+            try{                        
+                if(myobj == "ok")
+                  {				
+                	window.location.href="index.html";		
+                  }
+                else
+                  {
+                	if(myobj==null)
+                		{
+                		alert("请先登录");
+                		}else
+                			{
+                			alert("发生问题:"+myobj);
+                			}
+                  
+                  //window.location.href="index.html";  
+                  return;
+                  }			
+              }catch(err)
+              {
+                alert("登录失效 重新登录");
+                window.location.href="index.html";  
+                return;
+              }		
+           }
+        });	     
+	    }    
+	  };
+	  $('.site-demo-layedit').on('click', function(){
+	    var type = $(this).data('type');
+	    active[type] ? active[type].call(this) : '';
+	  });
+
+	
+/*--POST-SEND--*/
+function postloadXMLDoc(url,postvlue,cfunc)
+{
+	if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	 }
+	 else
+	 {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+  
+	if (xmlhttp!=null) 
+	 {
+	   xmlhttp.onreadystatechange=cfunc;
+	   xmlhttp.open("POST",url,true);
+	   xmlhttp.setRequestHeader("Content-type","application/json;charset=utf-8");
+	   xmlhttp.send(postvlue);
+		//xmlhttp.send("userName="+inputname+"&userPassword="+inputpass);
+		//xmlhttp.send();
+	 }else
+	 {
+	  alert("浏览器不支持");
+	 }
+
+}	
+	
+/*--如何根据url获取参数：--*/ 
+function getURLParameter(name) {
+   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+
+</script>
+
+</body>
+</html>

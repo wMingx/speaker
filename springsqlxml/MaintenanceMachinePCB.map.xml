@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="maintenanceMachinePcb">
+
+
+<select id="selectMaintenanceMachine" parameterType="MaintenanceMachinePcb" resultType="MaintenanceMachinePcb">
+		select  code as code, 
+				model as model,
+		 		failureProperty as failureProperty,
+				solution as solution, 
+				maintenancer as maintenancer,
+				timeEnd as timeEnd,
+				timeIN as timeIN,				
+				convert(nvarchar(MAX),intflag) as intflag 
+		from maintenanceMachine_table 
+		where  timeflag=convert(datetime,#{timeflag})
+			</select>
+
+<select id="selectMaintenancePcb" parameterType="MaintenanceMachinePcb" resultType="MaintenanceMachinePcb">
+		select  code as code, 
+				model as model,
+		 		failureProperty as failureProperty,
+				solution as solution, 
+				maintenancer as maintenancer,
+				timeEnd as timeEnd,
+				timeIN as timeIN,					
+				convert(nvarchar(MAX),intflag) as intflag 
+		from maintenancePcb_table 
+		where  timeflag=convert(datetime,#{timeflag})
+			</select>
+<insert id="insertMaintenanceMachine" parameterType="MaintenanceMachinePcb">
+		
+		insert into maintenanceMachine_table 
+			(code,
+			 model,
+			 failureProperty,
+			 solution,
+			 maintenancer,
+			 timeEnd,
+			 
+			 timeflag	
+			 )
+		values
+			(#{code},
+			 #{model},
+			 #{failureProperty},
+			 #{solution},
+			 #{maintenancer},
+			 convert(datetime,#{timeEnd}),
+			 
+			 convert(datetime,#{timeflag})
+			 
+			 ) 
+	</insert>
+
+<insert id="insertMaintenancePcb" parameterType="MaintenanceMachinePcb">
+		
+		insert into maintenancePcb_table 
+			(code,
+			 model,
+			 failureProperty,
+			 solution,
+			 maintenancer,
+			 timeEnd,
+			 
+			 timeflag
+			 )
+		values
+			(#{code},
+			 #{model},
+			 #{failureProperty},
+			 #{solution},
+			 #{maintenancer},
+			 convert(datetime,#{timeEnd}),
+			  
+			 convert(datetime,#{timeflag})
+			 ) 
+	</insert>
+	
+	
+	
+	<update id="updateMaintenanceMachine" parameterType="MaintenanceMachinePcb">
+		update  maintenanceMachine_table set 
+			code=#{code},
+			model=#{model},
+			failureProperty=#{failureProperty}, 
+			timeEnd = convert(datetime,#{timeEnd}, 
+			solution =#{solution}, 
+			maintenancer =#{maintenancer}
+			)
+		from maintenanceMachine_table
+		where
+		intflag=convert(int,#{intflag})
+	</update>
+	
+	
+	
+	<update id="updateMaintenancePcb" parameterType="MaintenanceMachinePcb">
+		update  maintenancePcb_table set 
+			code=#{code},
+			model=#{model},
+			failureProperty=#{failureProperty}, 
+			timeEnd = convert(datetime,#{timeEnd}, 
+			solution =#{solution}, 
+			maintenancer =#{maintenancer}			
+			)
+		from maintenancePcb_table
+		where
+		intflag=convert(int,#{intflag})
+	</update>
+
+</mapper>

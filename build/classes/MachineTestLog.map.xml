@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="machineTestLog">
+
+<select id="selectMachineTestLog" parameterType="MachineTestLog" resultType="MachineTestLog">
+		select machineModel  as machineModel, machineName as machineName, originalValue  as originalValue, ratio   as ratio,
+		    data   as data, dataMin    as dataMin,  dataMax   as dataMax, faultFlag  as faultFlag,
+		    testTime    as testTime, createdTime as createdTime
+		from machineTestLog  where  machineModel = #{machineModel} AND testTime  = #{testTime}
+	</select>
+
+
+  
+<insert id="insertMachineTestLog" parameterType="MachineTestLog">
+		insert into machineTestLog 
+			(machineModel,machineName,originalValue ,ratio,data,dataMin,dataMax ,faultFlag,testTime)
+		values
+			(#{machineModel},
+			 #{machineName},
+			 #{originalValue},
+			 #{ratio},
+			 #{data},
+			 #{dataMin},
+			 #{dataMax},
+			 #{faultFlag},
+			 #{testTime}			 			 
+			 ) 
+		
+	</insert>
+	
+	 
+	
+	
+</mapper>

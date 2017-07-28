@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="machineCodeModel">
+
+<select id="selectmachineCodeModel" parameterType="MachineCodeModel" resultType="MachineCodeModel">
+		<!--select a.machineCode as machineCode, a.machineModel as machineModel, 
+		       a.name as name,a.time as time,
+		       convert(nvarchar(MAX),a.intflag) as intflag  
+		from machineCodeModel as a 	      
+	    where  (a.machineCode like '%'+ #{machineCode}+'%' 
+               OR a.machineModel like '%'+#{machineCode}+'%')
+               AND( a.time <![CDATA[>=]]> convert(datetime,#{machineModel}) 
+               AND a.time <![CDATA[<=]]> convert(datetime,#{time}))
+		UNION
+		select d.machineCode as machineCode, machineCodeModel.machineModel as machineModel, 
+		       d.customerName as name,
+			   d.deliveryTime as time,
+		       convert(nvarchar(MAX),d.intflag) as intflag 
+		from delivery_table as d LEFT JOIN machineCodeModel ON d.machineCode = machineCodeModel.machineCode 
+		where( d.machineCode like '%'+ #{machineCode} +'%' 
+			OR  d.customerName like '%'+ #{machineCode} +'%' OR  d.contractNumber like  '%'+#{machineCode} +'%' 
+			OR  d.consignor like  '%'+#{machineCode} +'%' 
+			OR  d.deliveryNote like '%'+ #{machineCode} +'%' OR  d.deliveryAddress like  '%'+ #{machineCode} +'%' )
+			AND(  d.deliveryTime <![CDATA[>=]]> convert(datetime,#{machineModel}) AND  d.deliveryTime <![CDATA[<=]]> convert(datetime,#{time}) 
+			OR    d.createdTime  <![CDATA[>=]]> convert(datetime,#{machineModel}) AND d.createdTime  <![CDATA[<=]]> convert(datetime,#{time}) 
+			OR    d.updatedTime  <![CDATA[>=]]> convert(datetime,#{machineModel}) AND d.updatedTime  <![CDATA[<=]]> convert(datetime,#{time}))
+	   	         -->
+		<!-- select a.machineCode as machineCode, a.machineModel as machineModel, 
+		       a.name as name,a.time as time,
+		       convert(nvarchar(MAX),a.intflag) as intflag  
+		from machineCodeModel as a 	      
+	    where  (a.machineCode like '%'+ #{machineCode}+'%' 
+               OR a.machineModel like '%'+#{machineCode}+'%')
+               AND( a.time <![CDATA[>=]]> convert(datetime,#{machineModel}) 
+               AND a.time <![CDATA[<=]]> convert(datetime,#{time}))
+		UNION
+		select d.machineCode as machineCode, d.machineModel as machineModel, 
+		       d.customerName as name,
+			   d.deliveryTime as time,
+		       convert(nvarchar(MAX),d.intflag) as intflag 
+		from delivery_table as d 
+		where( d.machineCode like '%'+ #{machineCode} +'%' 
+			OR  d.customerName like '%'+ #{machineCode} +'%' OR  d.contractNumber like  '%'+#{machineCode} +'%' 
+			OR  d.consignor like  '%'+#{machineCode} +'%' 
+			OR  d.deliveryNote like '%'+ #{machineCode} +'%' OR  d.deliveryAddress like  '%'+ #{machineCode} +'%' )
+			AND(  d.deliveryTime <![CDATA[>=]]> convert(datetime,#{machineModel}) AND  d.deliveryTime <![CDATA[<=]]> convert(datetime,#{time}) 
+			OR    d.createdTime  <![CDATA[>=]]> convert(datetime,#{machineModel}) AND d.createdTime  <![CDATA[<=]]> convert(datetime,#{time}) 
+			OR    d.updatedTime  <![CDATA[>=]]> convert(datetime,#{machineModel}) AND d.updatedTime  <![CDATA[<=]]> convert(datetime,#{time}))         
+		           -->
+		 select p.z as machineCode,
+		        machineCodeModel.machineModel as machineModel, 
+		        machineCodeModel.name as name,
+		        machineCodeModel.time as time,
+		        convert(nvarchar(MAX),machineCodeModel.intflag) as intflag   
+		 from 
+			 (select 
+			        a.machineCode as z
+			  from
+			        machineCodeModel as a 	      
+		      where  
+		           ( a.time  <![CDATA[>=]]> convert(datetime,#{machineModel})
+		           AND  a.time  <![CDATA[<=]]> convert(datetime,#{time}))
+		           AND (a.machineCode like '%'+ #{machineCode} +'%'  
+	               OR   a.machineModel like '%'+ #{machineCode} +'%' )
+	               
+			 UNION		
+			 select 
+			       d.machineCode as z
+	         from 
+	               delivery_table as d 	
+			 where
+			       ( (d.deliveryTime <![CDATA[>=]]> convert(datetime,#{machineModel}) 
+					AND  d.deliveryTime <![CDATA[<=]]> convert(datetime,#{time})) 
+					OR   (d.createdTime  <![CDATA[>=]]> convert(datetime,#{machineModel}) 
+					AND  d.createdTime  <![CDATA[<=]]> convert(datetime,#{time})) 
+					OR   (d.updatedTime  <![CDATA[>=]]> convert(datetime,#{machineModel}) 
+					AND  d.updatedTime  <![CDATA[<=]]> convert(datetime,#{time})))
+			        AND  (d.machineCode like '%'+ #{machineCode} +'%' 
+					OR  d.customerName like '%'+ #{machineCode} +'%' 
+					OR  d.contractNumber like  '%'+ #{machineCode} +'%' 
+					OR  d.consignor like  '%'+ #{machineCode} +'%' 
+					OR  d.deliveryNote like '%'+ #{machineCode} +'%'
+					OR  d.deliveryAddress like  '%'+ #{machineCode} +'%' )
+					
+			UNION
+		    select 
+		          code as z			   
+		    from 
+		          test_record as te 
+		    where 
+		          te.code = #{machineCode}					
+	        )p 
+       LEFT JOIN 
+                machineCodeModel ON p.z = machineCodeModel.machineCode            
+		           
+		           
+		           
+		              
+	</select>
+
+<select id="selectmachineCodeModelsingle" parameterType="MachineCodeModel" resultType="MachineCodeModel">
+		select machineCode, machineModel, name,time,convert(nvarchar(MAX),intflag) as intflag  from machineCodeModel 
+		  where  (machineCode = #{machineCode})
+		AND  ( time <![CDATA[>=]]> convert(datetime,#{machineModel}) 
+		AND  time <![CDATA[<=]]> convert(datetime,#{time}))
+	</select>
+
+
+<select id="selectPcbCodeModel" parameterType="MachineCodeModel" resultType="MachineCodeModel">
+		select pcbCodeModel.pcbCode as machineCode,
+		       pcbCodeModel.pcbModel as machineModel,name,time,
+		       convert(nvarchar(MAX),intflag) as intflag  
+		from pcbCodeModel 
+		where ( time <![CDATA[>=]]> convert(datetime,#{machineModel})
+		     AND time <![CDATA[<=]]> convert(datetime,#{time}))
+			 AND (pcbCode like '%'+#{machineCode}+'%' 
+			 OR   pcbModel like '%'+ #{machineCode}+'%')				
+		<!--  UNION
+	    select code as machineCode,
+			   '' as machineModel,
+			   '' as name,
+			   '' as time,
+			   '' as intflag
+	    from test_record as te 
+	    where te.code =  #{machineCode} -->
+		 
+	</select>
+	
+	<select id="selectPcbCodeModelsingle" parameterType="MachineCodeModel" resultType="MachineCodeModel">
+		select pcbCodeModel.pcbCode as machineCode,pcbCodeModel.pcbModel as machineModel,name,time,convert(nvarchar(MAX),intflag) as intflag  from pcbCodeModel 
+		  where  (pcbCode = #{machineCode})
+		AND (time <![CDATA[>=]]> convert(datetime,#{machineModel})
+		AND time <![CDATA[<=]]> convert(datetime,#{time}))
+	</select>
+  
+<insert id="insertmachineCodeModel" parameterType="MachineCodeModel">
+		insert into machineCodeModel 
+			(machineCode,machineModel,name)
+		values
+			(
+			#{machineCode},
+			#{machineModel},
+			#{name}
+			 ) 
+	</insert>
+	
+<insert id="insertPcbCodeModel" parameterType="MachineCodeModel">
+		insert into pcbCodeModel 
+			(pcbCode,pcbModel,name)
+		values
+			(
+			#{machineCode},
+			#{machineModel},
+			#{name}
+			 ) 
+	</insert>	
+	
+	<update id="updatemachineCodeModel" parameterType="MachineCodeModel">
+		update  machineCodeModel set 
+			machineCode=#{machineCode},machineModel=#{machineModel},name=#{name}, time = convert(datetime,#{time})
+		from machineCodeModel
+		where
+		intflag=convert(int,#{intflag})
+	</update>
+	
+	<delete id="deletemachineCodeModel"  parameterType="MachineCodeModel">
+	delete
+	
+	from machineCodeModel
+	
+	where
+	
+	intflag=convert(int,#{intflag})
+	
+	
+	</delete>
+	
+	<update id="updatePcbCodeModel" parameterType="MachineCodeModel">
+		update  pcbCodeModel set 
+			pcbCode=#{machineCode},pcbModel=#{machineModel},name=#{name}, time = convert(datetime,#{time})
+		from pcbCodeModel
+		where
+		intflag=convert(int,#{intflag})
+	</update>
+	
+	<delete id="deletePcbCodeModel"  parameterType="MachineCodeModel">
+	delete
+	
+	from pcbCodeModel
+	
+	where
+	
+	intflag=convert(int,#{intflag})
+	
+	
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="maintenanceQuality">
+
+	
+<select id="selectMaintenanceQuality" parameterType="MaintenanceQuality" resultType="MaintenanceQuality">
+		select  quality as quality, 							
+				convert(nvarchar(MAX),intflag) as intflag 
+		from maintenanceQuality_table 		
+			</select>
+
+
+</mapper>

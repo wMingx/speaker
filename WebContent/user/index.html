@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>用户中心</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="自由,社区,贴吧,自定">
+  <meta name="description" content="随意的聊聊">
+  <link rel="stylesheet" href="../../speaker/res/layui/css/layui.css">
+  <link rel="stylesheet" href="../../speaker/res/css/global.css">
+  	
+   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+   <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="main">
+    <a class="logo" href="../../speaker/index.html" title="Fly">Fly社区</a>
+    <div class="nav">
+  
+    </div>
+    
+    <div class="nav-user" id="loginflag">      
+   
+    </div>
+  </div>
+</div>
+
+<div class="main fly-user-main layui-clear">
+  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+ 
+    <li class="layui-nav-item layui-this">
+      <a href="index.html">
+        <i class="layui-icon">&#xe612;</i>
+        用户中心
+      </a>
+    </li>
+    <li class="layui-nav-item">
+      <a href="set.html">
+        <i class="layui-icon">&#xe620;</i>
+        基本设置
+      </a>
+    </li>
+
+  </ul>
+  
+  <div class="site-tree-mobile layui-hide">
+    <i class="layui-icon">&#xe602;</i>
+  </div>
+  <div class="site-mobile-shade"></div>
+  
+  <div class="fly-panel fly-panel-user" pad20>
+    <!--
+    <div class="fly-msg" style="margin-top: 15px;">
+      您的邮箱尚未验证，这比较影响您的帐号安全，<a href="activate.html">立即去激活？</a>
+    </div>
+    -->
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+      <ul class="layui-tab-title" id="LAY_mine">
+        <li data-type="mine-jie" lay-id="index" class="layui-this">我发的帖（<span id="themeindex"> </span>）</li>
+        <li data-type="collection" data-url="/collection/find/" lay-id="collection">我回复的帖（<span id="replyindex"> </span>）</li>
+      </ul>
+      <div class="layui-tab-content" style="padding: 20px 0;">
+        <div class="layui-tab-item layui-show">
+          <ul class="mine-view jie-row" id="theme">
+          
+
+
+          </ul>
+          <div id="page1" style="text-align: center"></div>
+          <div id="LAY_page"></div>
+        </div>
+        <div class="layui-tab-item">
+          <ul class="mine-view jie-row" id="reply">
+			
+          </ul>
+          <div id="page2" style="text-align: center"></div>
+          <div id="LAY_page1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p><a  > 社区</a> 2017 &copy;  </p>
+  <p>
+    <a href=" " target="_blank">产品授权</a>    
+  </p>
+  <p>
+ 
+  </p>
+</div>
+<script src="../../speaker/res/layui/layui.js"></script>
+<script type="text/template" id="html_theme">
+            <li>
+              <a class="jie-title" href="../../speaker/detail.html?themeid=${themeid}" target="_blank">${title}</a>
+              <i>${time}</i>
+              <!-- <a class="mine-edit" href="/jie/edit/8116">编辑</a> -->
+              
+            </li>
+</script>
+<script type="text/template" id="html_reply">
+            <li>
+              <a class="jie-title" href="../../speaker/detail.html?themeid=${themeid}" target="_blank">${title}</a>
+              <i>${time}</i>  </li>
+</script>
+<script type="text/template" id="html_unlogin">
+      <!-- 未登入状态 -->
+      <a class="unlogin" href="user/login.html"><i class="iconfont icon-touxiang"></i></a>
+      <span><a href="user/login.html">登入</a><a href="user/reg.html">注册</a></span>
+</script>
+<script type="text/template" id="html_login">      
+      <!-- 登入后的状态 -->      
+      <a class="avatar" href="../../speaker/user/index.html">
+        <img src=${img}>
+        <cite>${Name}</cite>
+        <i> </i>
+      </a>
+      <div class="nav">
+        <a href="../../speaker/user/set.html"><i class="iconfont icon-shezhi"></i>设置</a>
+        <a href="../../speaker/user/logout"><i class="iconfont icon-tuichu" style="top: 0; font-size: 22px;"></i>退了</a>
+      </div> 
+</script>
+<script>
+layui.use(['element'], function(){
+	  var element = layui.element();
+	 
+	  //监听Tab切换
+	  element.on('tab(user)', function(data){
+	     
+	  });
+});	 
+
+var pagecount1=1;
+var pageintflag1=1;
+var pagecount2=1;
+var pageintflag2=1;
+
+
+
+  
+$(document).ready(function(){
+	$("#page1").hide();
+	$("#page2").hide();
+    var timestamp3 = new Date().getTime();
+    
+    var localtime  = new Date() ;
+    
+    json = {"userName":""        	   		  
+	   }
+
+	   jsonValue = JSON.stringify(json);
+
+	   var person=jsonValue; 
+
+	   xmlhttp=null;
+
+	   postloadXMLDoc("../../speaker/manager/userlogin/selsctuserloginsession"+"?t="+timestamp3 ,person,function()			
+	   {			
+	     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+	      {
+	       var myobj=eval(xmlhttp.responseText); 
+	       
+	       try{    	   
+	   	 	   if(myobj[0].userName == null){
+	   	 		   $("#html_unlogin").tmpl("").appendTo('#loginflag');	
+	   	 			alert("登陆失效");
+	   	 			window.location.href="../../speaker/index.html";  
+	   	 	   }
+	   	 	   else
+	   	 	   { 
+	   	 		    var movies = [ { Name: myobj[0].userName,img:myobj[0].imagead } ]; 	
+	   		    
+	   				$("#html_login").tmpl(movies).appendTo('#loginflag');	
+	   				
+	   				json = {"uid": myobj[0].uid,
+	   						"intflag":(pageintflag1-1)*15// 起始索引
+	   				}
+	  			   		  
+				    }
+				
+				    jsonValue = JSON.stringify(json);	  
+				  
+				    var person=jsonValue;
+				    
+				    xmlhttp=null;
+				    
+				    postloadXMLDoc("../../speaker/manager/themetable/selectthemeTableuid"+"?t="+timestamp3 ,person,function()			
+				    {			
+				      if(xmlhttp.readyState==4 && xmlhttp.status==200)
+				       {
+				        var myobj=eval(xmlhttp.responseText); 
+				        
+				        try{ 
+				        	document.getElementById("themeindex").innerHTML=myobj[0].count;
+				        	
+				        	if( myobj[0].count>15)
+		        			{
+				        	$("#page1").show();
+				        	pagecount1=Math.ceil(myobj[0].count/15);
+				        	
+				        	layui.use(['laypage', 'layer'], function(){
+				        		var laypage = layui.laypage
+				        		,layer = layui.layer;
+				        		  
+				        		laypage({
+				        		  cont: 'page1', 
+				        		  pages: pagecount1, 
+				        		  curr:pageintflag1,
+				        		  jump: function(obj, first){  
+				        		    if(!first){  
+				        		      // layer.msg('第 '+ obj.curr +' 页');
+				        		  	  pageintflag1= obj.curr;
+				        		  	json = {"uid": myobj[0].uid,
+					   						"intflag":(pageintflag1-1)*15// 起始索引
+					   				}
+					  			   		  
+								    }
+								
+								    jsonValue = JSON.stringify(json);	  
+								  
+								    var person=jsonValue;
+								    
+								    xmlhttp=null;
+								    $( "#theme" ).empty();
+								    postloadXMLDoc("../../speaker/manager/themetable/selectthemeTableuid"+"?t="+timestamp3 ,person,function()			
+								    {			
+								      if(xmlhttp.readyState==4 && xmlhttp.status==200)
+								       {
+								        var myobj=eval(xmlhttp.responseText); 
+								        
+								        try{ 
+								        	for (var i=0;i<myobj.length;i++)
+								        	{        	
+									        	
+												if(myobj[i].title!=null)
+											    {				
+													var movies = [ { themeid: myobj[i].themeid,title:myobj[i].title,time:myobj[i].updatedTime.slice(0,myobj[i].updatedTime.indexOf("."))} ]; 	
+												    
+													 $("#html_theme").tmpl(movies).appendTo('#theme');								    
+												    
+											    }            
+												else
+											    {														        //alert("获取列表失败");
+											         //window.location.href="index.html";  
+											        return;
+											    }
+								        	}
+								        }catch(err)
+								          {
+								            alert("获取列表失败");
+								           
+								            return;
+								          }		
+								       }
+								    });        		  	  
+				        		  	   
+				        		    }
+				        		  
+				        		});
+				        	  });
+		        			}
+				        	for (var i=0;i<myobj.length;i++)
+				        	{        	
+					        	
+								if(myobj[i].title!=null)
+							    {				
+									var movies = [ { themeid: myobj[i].themeid,title:myobj[i].title,time:myobj[i].updatedTime.slice(0,myobj[i].updatedTime.indexOf("."))} ]; 	
+								    
+									 $("#html_theme").tmpl(movies).appendTo('#theme');								    
+								    
+							    }            
+								else
+							    {			
+							        //alert("获取列表失败");
+							         //window.location.href="index.html";  
+							        return;
+							    }
+				        	}
+				        	 xmlhttp=null;
+				        	postloadXMLDoc("../../speaker/manager/replyTable/selectReplyTableuid"+"?t="+timestamp3 ,person,function()			
+							   {			
+							     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+							      {
+							       var myobj=eval(xmlhttp.responseText); 
+							       
+							       try{
+							    	   
+							    	   document.getElementById("replyindex").innerHTML=myobj[0].count;
+							        	if( myobj[0].count>15)
+					        			{
+							        	$("#page2").show();	
+							        	pagecount2=Math.ceil(myobj[0].count/15);
+							        	
+							        	layui.use(['laypage', 'layer'], function(){
+							        		var laypage = layui.laypage
+							        		,layer = layui.layer;
+							        		  
+							        		laypage({
+							        		  cont: 'page2', 
+							        		  pages: pagecount2, 
+							        		  curr:pageintflag2,
+							        		  jump: function(obj, first){  
+							        		    if(!first){  
+							        		      // layer.msg('第 '+ obj.curr +' 页');
+							        		  pageintflag2= obj.curr;	
+							        		  
+							        		  json = {"uid": myobj[0].uid,
+								   						"intflag":(pageintflag2-1)*15// 起始索引
+								   				}
+								  			   		  
+											    }
+											
+											    jsonValue = JSON.stringify(json);	  
+											  
+											    var person=jsonValue;
+							        		  $( "#reply" ).empty();
+										       xmlhttp=null;
+									        	postloadXMLDoc("../../speaker/manager/replyTable/selectReplyTableuid"+"?t="+timestamp3 ,person,function()			
+												   {			
+												     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+												      {
+												       var myobj=eval(xmlhttp.responseText); 
+												       
+												       try{for (var i=0;i<myobj.length;i++)
+											        	{        	
+												        	
+															if(myobj[i].themeid!=null)
+														    {	 
+															    var themeidre=myobj[i].themeid;
+															    
+															    var themetile=myobj[i].title;
+															    
+															    var replytextre=((myobj[i].replytext.replace(/<[^>]+>/g,"")).replace(/(^\s+)|(\s+$)/g,"")).replace(/\s/g,"").slice(0,35) ;
+															    
+															    var timere=myobj[i].time.slice(0,myobj[i].time.indexOf("."));
+															    
+															    var movies = [ { themeid:themeidre,title:"标题："+themetile+"   内容："+replytextre+"....",time:timere} ]; 	
+															    
+																 $("#html_reply").tmpl(movies).appendTo('#reply');	
+																
+														    }            
+															else
+														    {			
+														        //alert("获取列表失败");
+														         //window.location.href="index.html";  
+														        return;
+														    }
+											        	}
+											         }catch(err)
+											         {
+											           alert("获取列表失败");
+											            
+											           return;
+											         }		
+											      }
+											   });	
+							        		  	   
+							        		    }
+							        		  
+							        		});
+							        	  });
+					        			}
+							        	for (var i=0;i<myobj.length;i++)
+							        	{        	
+								        	
+											if(myobj[i].themeid!=null)
+										    {															
+												 
+											    
+											    var themeidre=myobj[i].themeid;
+											    
+											    var themetile=myobj[i].title;
+											    
+											    var replytextre=((myobj[i].replytext.replace(/<[^>]+>/g,"")).replace(/(^\s+)|(\s+$)/g,"")).replace(/\s/g,"").slice(0,35) ;
+											    
+											    var timere=myobj[i].time.slice(0,myobj[i].time.indexOf("."));
+											    
+											    var movies = [ { themeid:themeidre,title:"标题："+themetile+"   内容："+replytextre+"....",time:timere} ]; 	
+											    
+												 $("#html_reply").tmpl(movies).appendTo('#reply');	
+												
+										    }            
+											else
+										    {			
+										        //alert("获取列表失败");
+										         //window.location.href="index.html";  
+										        return;
+										    }
+							        	}
+							         }catch(err)
+							         {
+							           alert("获取列表失败");
+							            
+							           return;
+							         }		
+							      }
+							   });	
+				          }catch(err)
+				          {
+				            alert("获取列表失败");
+				           
+				            return;
+				          }		
+				       }
+				    });
+			    
+	       }catch(err)
+	         {
+	           alert("获取列表失败");
+	            
+	           return;
+	         }		
+	      }
+	   });	
+});
+
+ 
+
+
+  
+ 
+  
+
+ /*--POST-SEND--*/
+function postloadXMLDoc(url,postvlue,cfunc)
+{
+	if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	 }
+	 else
+	 {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+  
+	if (xmlhttp!=null) 
+	 {
+	   xmlhttp.onreadystatechange=cfunc;
+	   xmlhttp.open("POST",url,true);
+	   xmlhttp.setRequestHeader("Content-type","application/json;charset=utf-8");
+	   xmlhttp.send(postvlue);
+		//xmlhttp.send("userName="+inputname+"&userPassword="+inputpass);
+		//xmlhttp.send();
+	 }else
+	 {
+	  alert("Your browser does not support XMLHTTP.");
+	 }
+}
+</script>
+</body>
+</html>

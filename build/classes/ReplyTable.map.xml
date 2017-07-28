@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="replyTable">
+
+<select id="selectReplyTable" parameterType="ReplyTable" resultType="ReplyTable">
+		 select top 15 * from 
+		(select row_number()over(order by replyid   )rownumber,* from reply_table where themeid = #{themeid})a
+		where rownumber>#{intflag}  
+		
+	</select>
+	
+
+<select id="selectReplyTablecount" parameterType="ReplyTable" resultType="java.lang.Integer" >
+		select count(*) from reply_table where themeid = #{themeid}
+</select>
+
+<select id="selectReplyTableuidcount" parameterType="ReplyTable" resultType="java.lang.Integer" >
+		select count(*) from reply_table where uid = #{uid}
+</select>
+
+<select id="selectReplyTableuid" parameterType="ReplyTable" resultType="ReplyTable">
+	 	select top 15 * from 
+		(select row_number()over(order by time DESC   )rownumber,* from reply_table where uid = #{uid})a
+		where rownumber>#{intflag}  
+	 	
+	 	
+ 
+		
+	</select>	
+
+
+<select id="selectReplyTablereplyid" parameterType="ReplyTable" resultType="ReplyTable">
+		select *
+		
+		from reply_table 
+		
+		where replyid = #{replyid} 
+		 
+		
+	</select>
+	
+<select id="selectReplyTablethemeid" parameterType="ReplyTable" resultType="ReplyTable">
+		select *
+		
+		from reply_table 
+		
+		where themeid = #{themeid} 
+	
+	</select>
+  
+<insert id="insertReplyTable" parameterType="ReplyTable">
+		insert into reply_table 		
+		
+			(intflag,themeid,replytext,uid )
+			
+		values
+			(#{intflag},
+			 #{themeid},
+			 #{replytext},
+			 #{uid}
+			 ) 
+	</insert>
+	
+	
+<update id="updateReplyTable" parameterType="ReplyTable">
+		update  reply_table set 
+		
+		replytext=#{replytext},
+		
+		time=GETDATE()
+		where
+		
+		replyid= #{replyid}
+		
+	</update>
+	
+<delete id="deleteReplyTable" parameterType="ReplyTable">
+		delete
+		
+		from reply_table
+		
+		where
+		
+		replyid= #{replyid}	
+	
+	</delete>
+	
+</mapper>

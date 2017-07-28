@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>帐号设置</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="自由,社区,贴吧,自定">
+  <meta name="description" content="随意的聊聊">
+  <link rel="stylesheet" href="../../speaker/res/layui/css/layui.css">
+  <link rel="stylesheet" href="../../speaker/res/css/global.css">
+    	
+   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+   <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="main">
+    <a class="logo" href="../../speaker/index.html" title="Fly">Fly社区</a>
+    <div class="nav">
+ 
+    </div>
+    
+    <div class="nav-user" id="loginflag">      
+    </div>
+  </div>
+</div>
+
+<div class="main fly-user-main layui-clear">
+  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+
+    <li class="layui-nav-item">
+      <a href="index.html">
+        <i class="layui-icon">&#xe612;</i>
+        用户中心
+      </a>
+    </li>
+    <li class="layui-nav-item layui-this">
+      <a href="set.html">
+        <i class="layui-icon">&#xe620;</i>
+        基本设置
+      </a>
+    </li>
+
+  </ul>
+  
+  <div class="site-tree-mobile layui-hide">
+    <i class="layui-icon">&#xe602;</i>
+  </div>
+  <div class="site-mobile-shade"></div>
+  
+  <div class="fly-panel fly-panel-user" pad20>
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+      <ul class="layui-tab-title" id="LAY_mine">
+        <li class="layui-this" lay-id="info">我的资料</li>
+        <li lay-id="avatar">头像</li>
+        <li lay-id="pass">密码</li>        
+      </ul>
+      <div class="layui-tab-content" style="padding: 20px 0;">
+        <div class="layui-form layui-form-pane layui-tab-item layui-show">
+         
+            <div class="layui-form-item">
+              <label for="L_email" class="layui-form-label">邮箱</label>
+              <div class="layui-input-inline">
+                <input type="text" id="L_email" name="email" required lay-verify="email" autocomplete="off" value="" class="layui-input">
+              </div>
+               
+            </div>
+            <div class="layui-form-item">
+              <label for="L_username" class="layui-form-label">昵称</label>
+              <div class="layui-input-inline">
+                <input type="text" id="L_username" name="username" required lay-verify="required" autocomplete="off" value="" class="layui-input">
+              </div>
+               
+
+            </div>
+  
+            <div class="layui-form-item">
+              <button class="layui-btn" key="set-mine" lay-filter="*"  lay-submit id="namebutton">确认修改</button>
+            </div>
+          </div>
+          
+          <div class="layui-form layui-form-pane layui-tab-item">
+            <div class="layui-form-item">
+              <div class="avatar-add">
+                <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过30KB</p>
+                <div class="upload-img">
+                <form enctype="multipart/form-data">  
+                  <input type="file" name="file" id="LAY-file" lay-title="上传头像" onchange ="uploadFile(this,1)" >
+                </form> 
+                </div>
+                <img id="face" src="../../speaker/0.jpg">
+                <span class="loading"></span>
+                <div id="son"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="layui-form layui-form-pane layui-tab-item">
+           
+              <div class="layui-form-item">
+                <label for="L_nowpass" class="layui-form-label">当前密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" id="L_nowpass" name="nowpass" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_pass" class="layui-form-label">新密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" id="L_pass" name="pass" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label">确认密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <button class="layui-btn" key="set-mine" id="passbutton" lay-filter="*"  lay-submit>确认修改</button>
+              </div>             
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p><a  > 社区</a> 2017 &copy;  </p>
+  <p>
+    <a href=" " target="_blank">产品授权</a>    
+  </p>
+</div>
+<script src="../../speaker/res/layui/layui.js"></script>
+<script type="text/template" id="html_login">      
+      <!-- 登入后的状态 -->      
+      <a class="avatar" href="../../speaker/user/index.html">
+        <img src=${img}>
+        <cite>${Name}</cite>
+        <i> </i>
+      </a>
+      <div class="nav">
+        <a href="../../speaker/user/set.html"><i class="iconfont icon-shezhi"></i>设置</a>
+        <a href="../../speaker/user/logout"><i class="iconfont icon-tuichu" style="top: 0; font-size: 22px;"></i>退了</a>
+      </div> 
+</script>
+<script type="text/template" id="html_unlogin">
+      <!-- 未登入状态 -->
+      <a class="unlogin" href="../../speaker/user/login.html"><i class="iconfont icon-touxiang"></i></a>
+      <span><a href="../../speaker/user/login.html">登入</a><a href="../../speaker/user/reg.html">注册</a></span>
+</script>
+<script>
+layui.use(['element'], function(){
+	  var element = layui.element();
+	 
+	  //监听Tab切换
+	  element.on('tab(user)', function(data){
+	     
+	  });
+});	  
+
+$("#namebutton").click(function() { 
+
+	var timestamp3 = new Date().getTime();
+    
+    var localtime  = new Date() ;
+    
+    json = {"email":document.getElementById('L_email').value ,
+    		"userName":document.getElementById('L_username').value    		 
+    }
+	   jsonValue = JSON.stringify(json);
+
+	   var person=jsonValue; 
+
+	   xmlhttp=null;
+
+	   postloadXMLDoc("../../speaker/manager/userlogin/updateUserLoginusername"+"?t="+timestamp3 ,person,function()			
+	   {			
+	     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+	      {
+				var myobj=xmlhttp.responseText;  
+				try{
+									
+					if(myobj!="")
+					{
+						alert("修改失败:"+myobj);
+					}else
+					{
+						alert("用户名、邮箱 修改成功");
+						parent.location.reload();
+					}			    
+	       }catch(err)
+	         {
+	           alert("获取列表失败");
+	            
+	           return;
+	         }		
+	      }
+	   });	
+	
+} );
+
+$("#passbutton").click(function() { 
+	var timestamp3 = new Date().getTime();
+    
+    var localtime  = new Date() ;
+    
+    json = {"password":document.getElementById('L_pass').value ,
+    		"userName":document.getElementById('L_nowpass').value ,
+    		"userRights":document.getElementById('L_repass').value    		 
+    }
+	   
+
+	   jsonValue = JSON.stringify(json);
+
+	   var person=jsonValue; 
+
+	   xmlhttp=null;
+
+	   postloadXMLDoc("../../speaker/manager/userlogin/updateUserLoginpass"+"?t="+timestamp3 ,person,function()			
+	   {			
+	     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+	      {
+				var myobj=xmlhttp.responseText;  
+				try{
+									
+					if(myobj!="")
+					{
+						alert("修改失败:"+myobj);
+					}else
+					{
+						alert("密码 修改成功");
+						parent.location.reload();
+					}			    
+	       }catch(err)
+	         {
+	           alert("获取 失败");
+	            
+	           return;
+	         }		
+	      }
+	   });
+	
+} );
+
+var fm=document.getElementsByTagName('form')[0];
+
+function uploadFile(obj, type) {  
+	var timestamp3 = new Date().getTime(); 
+	//实例化 FormData对象，同时收集表单的信息，包括普通表单域和文件表单域的信息  
+    var fd=new FormData(fm);  
+    
+    var xhr=new XMLHttpRequest();  
+    
+    xhr.onreadystatechange=function () {  
+        if(xhr.readyState==4 && xmlhttp.status==200){  
+        	var myobj=eval(xhr.responseText); 
+        	try{
+        	if(myobj[0].imagead!=null)
+        	{
+	            var face=document.getElementById("face");
+	            $("#LAY-file").val("");             
+	            face.setAttribute("src",myobj[0].imagead );  
+	            parent.location.reload();
+	            
+	            
+        	}else
+       		{
+	       		alert("上传失败");
+				parent.location.reload();
+       		}
+        	}catch(err)
+        	{
+        		alert("上传失败,不允许的格式");
+        	}
+        }  
+    };  
+    xhr.upload.onprogress=function (evt) {   //事件监听器，获取上传的情况  
+        var loaded=evt.loaded,  //已上传的大小  
+            total=evt.total,  //总大小  
+            per=Math.floor((loaded/total)*100)+'%', //转换成百分比  
+            son=document.getElementById("son");  
+        son.innerHTML=per;  
+        son.style.width=per;  
+    }  
+    xhr.open('post','../../speaker/manager/userlogin/selectreplyimgup'+"?t="+timestamp3);    
+    xhr.send(fd);   //发送数据  
+    return false;   //阻止页面提交  
+}  ;
+ 
+
+
+
+$(document).ready(function(){
+	
+    var timestamp3 = new Date().getTime();
+    
+    var localtime  = new Date() ;
+    
+    json = {"userName":""        	   		  
+	   }
+
+	   jsonValue = JSON.stringify(json);
+
+	   var person=jsonValue; 
+
+	   xmlhttp=null;
+
+	   postloadXMLDoc("../../speaker/manager/userlogin/selsctuserloginsession"+"?t="+timestamp3 ,person,function()			
+	   {			
+	     if(xmlhttp.readyState==4 && xmlhttp.status==200)
+	      {
+	       var myobj=eval(xmlhttp.responseText); 
+	       
+	       try{    	   
+	   	 	   if(myobj[0].userName == null){
+	   	 		   $("#html_unlogin").tmpl("").appendTo('#loginflag');	
+	   	 			alert("登陆失效");
+	   	 			window.location.href="../../speaker/index.html";  
+	   	 	   }
+	   	 	   else
+	   	 	   { 
+	   	 		var movies = [ { Name: myobj[0].userName,img:myobj[0].imagead } ]; 	
+		   		    
+	   				$("#html_login").tmpl(movies).appendTo('#loginflag');	
+	   			 	var face=document.getElementById("face");
+		                      
+		            face.setAttribute("src",myobj[0].imagead );  
+	   		    }	 			    
+	       }catch(err)
+	         {
+	           alert("获取列表失败");
+	            
+	           return;
+	         }		
+	      }
+	   });	
+});
+
+ 
+ 
+
+
+ /*--POST-SEND--*/
+function postloadXMLDoc(url,postvlue,cfunc)
+{
+	if (window.XMLHttpRequest)
+	 {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	 }
+	 else
+	 {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	 }
+  
+	if (xmlhttp!=null) 
+	 {
+	   xmlhttp.onreadystatechange=cfunc;
+	   xmlhttp.open("POST",url,true);
+	   xmlhttp.setRequestHeader("Content-type","application/json;charset=utf-8");
+	   xmlhttp.send(postvlue);
+		//xmlhttp.send("userName="+inputname+"&userPassword="+inputpass);
+		//xmlhttp.send();
+	 }else
+	 {
+	  alert("Your browser does not support XMLHTTP.");
+	 }
+}
+</script>
+
+</body>
+</html>

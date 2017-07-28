@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="testRecord">
+
+<select id="selectTestRecord" parameterType="testRecord" resultType="testRecord">
+		select * from test_record where  code = #{code}
+	</select>
+
+<select id="selectTestRecordLike" parameterType="testRecord" resultType="testRecord">
+		select * from test_record  
+		where ( testTime <![CDATA[>=]]> convert(datetime,#{testTime}) AND testTime <![CDATA[<=]]> convert(datetime,#{oldtesttime}))
+		AND
+		( code like  #{code} +'%' OR  model like  #{code} +'%'
+		OR  testName like  #{code} +'%' OR  testResults like  #{code} +'%'  )
+		 
+	</select>
+  
+<insert id="insertTestRecord" parameterType="testRecord">
+		insert into test_record 
+			(code,model,testName,testResults,oldtesttime)
+		values
+			(#{code},
+			 #{model},
+			 #{testName},
+			 #{testResults},
+			 #{oldtesttime}) 
+	</insert>
+	
+	
+	
+	
+</mapper>
